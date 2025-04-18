@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ super() }}
+
+<div class="form-container" style="max-width: 470px; margin: 50px auto 0; padding: 20px;
+border: 1px solid #ccc; border-radius: 10px; background-color: wheat; overflow: hidden margin-top: 40px;">
+  <h2 class="text-center mb-4" style="font-size: 1.8rem";>Выплаты по ценным бумагам</h2>
+  <form method="POST" autocomplete="off">
+
+    <div class="row mb-2 align-items-center">
+      <div class="col-5">
+        <label for="payment" class="form-label mb-0">Тип выплаты</label>
+      </div>
+      <div class="col-7">
+        <select class="form-select form-select-sm" id="payment" name="payment" required>
+        <option value="" disabled selected>выберите тип выплаты</option>
+        {% for operation in operations %}
+          {% if operation.category_type == 'payments' %}
+            <option value="{{ operation.id }}">{{ operation.operation_type }}</option>
+          {% endif %}
+        {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="row mb-2 align-items-center">
+      <div class="col-5">
+        <label for="broker_id" class="form-label mb-0">Брокерский счёт</label>
+      </div>
+      <div class="col-7">
+        <select class="form-select form-select-sm" id="broker_id" name="broker_id" required>
+        <option value="" disabled selected>выберите брокерский счёт</option>
+        {% for broker in brokers %}
+          <option value="{{ broker.id }}">{{ broker.broker }}</option>
+        {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="row mb-2 align-items-center">
+      <div class="col-5">
+        <label for="asset_name" class="form-label mb-0">Эмитент</label>
+      </div>
+      <div class="col-7">
+        <select class="form-select form-select-sm" id="asset_name" name="asset_name" required>
+        <option value="" disabled selected>выберите эмитента</option>
+        {% for asset in assets %}
+          {% if asset.asset_type_id not in [3] %}
+            <option value="{{ asset.asset_name }}">{{ asset.asset_name }}</option>
+          {% endif %}
+        {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="row mb-2 align-items-center">
+      <div class="col-5">
+        <label for="isin" class="form-label mb-0">ISIN</label>
+      </div>
+      <div class="col-7">
+        <input type="text" class="form-control form-control-sm" id="isin" name="isin" required>
+      </div>
+    </div>
+
+    <div class="row mb-2 align-items-center">
+      <div class="col-5">
+        <label for="payment_date" class="form-label mb-0">Дата выплаты</label>
+      </div>
+      <div class="col-4">
+        <input type="date" class="form-control form-control-sm" id="payment_date" name="payment_date" required>
+      </div>
+    </div>
+
+    <div class="row mb-2 align-items-center">
+      <div class="col-5">
+        <label for="payment_amount" class="form-label mb-0">Размер выплаты, 1 ед.</label>
+      </div>
+      <div class="col-4">
+        <input type="number" value="" step="0.01" class="form-control form-control-sm"
+               id="payment_amount" name="payment_amount" required>
+      </div>
+    </div>
+
+    <div class="flash-messages" style="margin: 25px auto 20px; width: 70%;">
+      {% for category, msg in get_flashed_messages(with_categories=true) %}
+          <div class="flash-message flash-{{ category }}">
+              {{ msg }}
+          </div>
+      {% endfor %}
+    </div>
+
+    <div class="d-grid mt-4">
+      <button type="submit" class="btn btn-primary col-3 btn-sm ms-auto">Выполнить</button>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

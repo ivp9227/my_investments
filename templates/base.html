@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="{{ url_for('static', filename='images/money.png') }}" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Мои инвестиции</title>
+  <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body style="padding-top: 56px;">
+
+{% block content %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{{ url_for('index') }}">
+      <img src="{{ url_for('static', filename='images/money.png') }}" width="50" height="50" class="d-inline-block align-text-top">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <!-- Пункты меню" -->
+      <ul class="navbar-nav">
+
+        <li class="nav-item me-5">  <!-- Расстояние между пунктами меню -->
+          <a class="nav-link nav-custom-font" href="{{ url_for('index') }}">Главная</a>
+        </li>
+
+        <!-- Выпадающее меню "Операции" -->
+        <li class="nav-item dropdown me-5">
+          <a class="nav-link dropdown-toggle nav-custom-font" href="#" id="navbarDropdownOperations" role="button"
+             data-bs-toggle="dropdown" aria-expanded="false">Операции</a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownOperations">
+            <li><a class="dropdown-item" href="{{ url_for('purchase_asset') }}">Покупка</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('sale_asset') }}">Продажа</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('securities_payments') }}">Выплаты по ценным бумагам</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('bond_redemption') }}">Погашение облигаций</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('other_operations') }}">Прочие операции</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item me-5">
+          <a class="nav-link nav-custom-font" href="{{ url_for('operations_report') }}">Отчёт по операциям</a>
+        </li>
+
+        <li class="nav-item me-5">
+          <a class="nav-link nav-custom-font" href="{{ url_for('trade_history') }}">История сделок</a>
+        </li>
+
+        <li class="nav-item dropdown me-5">
+          <a class="nav-link dropdown-toggle nav-custom-font" href="#" id="navbarDropdownAnalytics" role="button"
+             data-bs-toggle="dropdown" aria-expanded="false">Аналитика</a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownAnalytics">
+            <li><a class="dropdown-item" href="{{ url_for('index') }}">Состав портфеля</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('income_report') }}">Отчёт по доходам</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('index') }}">Отчёт по налогам</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item me-5">
+          <a class="nav-link nav-custom-font p-0" href="{{ url_for('update_quotes') }}"
+             data-bs-toggle="tooltip" title="Обновить данные котировок">
+            <img src="{{ url_for('static', filename='images/gear _wheel.png') }}" width="50" height="50" class="d-inline-block align-text-top">
+          </a>
+        </li>
+
+      </ul>
+
+      <div class="ms-auto">
+        <span class="navbar-text" style="color: white;">
+          Стоимость портфеля: {{ transform_number(portfolio_value) }}  руб.
+        </span>
+
+        <br>  <!-- Перенос строки -->
+        <span class="navbar-text" style="color: white;">
+          Доход за всё время: {{ transform_number(income_all_time) }}  руб.
+        </span>
+
+        <br>  <!-- Перенос строки -->
+        <span class="navbar-text" style="color: white;">
+          Баланс: {{ transform_number(total_balance) }}  руб.
+        </span>
+
+      </div>
+
+    </div>
+  </div>
+</nav>
+
+{% endblock %}
+
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>
+

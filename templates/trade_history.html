@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ super() }}
+
+<div class="container-fluid mt-5">
+  <div class="table-responsive">
+    <table class="table table-striped table-hover table-bordered border-primary-subtle table-sm
+    table-small-font align-middle text-start">
+      <thead class="table-dark">
+        <tr>
+          <th class="text-center">Брокер</th>
+           <th class="text-center">Тип актива</th>
+           <th class="text-center">Наименование</th>
+           <th class="text-center">ISIN</th>
+           <th class="text-center">Дата покупки</th>
+           <th class="text-center">Стоимость 1ед.</th>
+           <th class="text-center">Кол-во</th>
+           <th class="text-center">Общая стоимость</th>
+           <th class="text-center">Комиссия</th>
+           <th class="text-center">Выплаты</th>
+           <th class="text-center">Цена продажи 1ед.</th>
+           <th class="text-center">Общая цена продажи</th>
+           <th class="text-center">Доход</th>
+          <th class="text-center">Дата продажи</th>
+          <th class="text-center">Дней владения</th>
+           <th class="text-center">Чистый доход %</th>
+           <th class="text-center">Годовой доход %</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+      {% for th_record in th_records %}
+      <tr>
+        <td>{{ th_record.broker.broker }}</td>
+        <td>{{ th_record.asset_type.asset_type }}</td>
+        <td>{{ th_record.asset_name }}</td>
+        <td class="text-center">{{ th_record.isin }}</td>
+        <td class="text-center">{{ th_record.purchase_date.strftime('%d.%m.%Y') }}</td>
+        <td class="text-center">{{ transform_number(th_record.cost_one_unit) }}</td>
+        <td class="text-center">{{ th_record.quantity }}</td>
+        <td class="text-center">{{ transform_number(th_record.total_purchase_cost) }}</td>
+        <td class="text-center">{{ transform_number(th_record.brokerage_fee) }}</td>
+        <td class="text-center">{{ transform_number(th_record.dividends_coupons_payouts) }}</td>
+        <td class="text-center">{{ transform_number(th_record.selling_price_one_unit) }}</td>
+        <td class="text-center">{{ transform_number(th_record.selling_price_asset) }}</td>
+        <td class="text-center">{{ transform_number(th_record.total_return) }}</td>
+        <td class="text-center">{{ th_record.sale_date.strftime('%d.%m.%Y') }}</td>
+        <td class="text-center">{{ th_record.holding_days }}</td>
+        <td class="text-center">{{ transform_number(th_record.net_profit_pct) }}</td>
+        <td class="text-center">{{ transform_number(th_record.annualized_return_pct) }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

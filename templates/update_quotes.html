@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ super() }}
+
+<style>
+  .custom-table thead th {
+    background-color: #f5deb3 !important;  /* Пшеничный цвет */
+    border-radius: 0.25rem 0.25rem 0 0 !important;  /* Скругленные верхние углы */
+  }
+  .custom-table {
+    border-radius: 0.25rem !important;  /* Скругление всей таблицы */
+    overflow: hidden;  /* Чтобы скругление работало */
+  }
+    .my-thead th {
+    font-size: 15px !important;
+  }
+   .table-custom-width {
+    width: 60% !important;
+  }
+</style>
+
+
+<h2 class="mt-4 p-3 bg-light">Данные по котировкам ценных бумаг</h2>
+
+<form method="POST" action="{{ url_for('update_quotes') }}">
+  <div class="text-start ms-5 mt-3 mb-3">
+    <button type="submit" class="btn btn-primary">Обновить котировки</button>
+  </div>
+  <div class="ms-5">
+    <table class="table table-striped table-custom-width small custom-table">
+      <thead class="my-thead">
+        <tr>
+          <th>Тип актива</th>
+          <th>Наименование</th>
+          <th>ISIN</th>
+          <th>Текущая цена</th>
+          <th>Новая цена</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for isin, d in data.items() %}
+        <tr>
+          <td>{{ AssetsList.query.get(d[0]).asset_type|capitalize }}</td>
+          <td>{{ d[1] }}</td>
+          <td>{{ isin }}</td>
+          <td>{{ transform_number(d[3]) }} руб.</td>
+          <td>
+            <input type="number"
+                   name="{{ isin }}"
+                   step="0.000000000001"
+                   min="0"
+                   value="{{ d[4] | round(2) }}"
+                   class="form-control form-control-sm"
+                   style="width: 140px">
+          </td>
+          {% if d[4] | round(2) > d[3] %}
+          <td><img src="{{ url_for('static', filename='images/arrow_green.png') }}"
+                   width="30" height="30" class="d-inline-block align-text-top"></td>
+          {% elif d[4] | round(2) < d[3] %}
+          <td><img src="{{ url_for('static', filename='images/arrow_red.png') }}"
+                   width="30" height="30" class="d-inline-block align-text-top"></td>
+          {% else %}
+          <td></td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</form>
+
+{% endblock %}
