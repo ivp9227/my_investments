@@ -71,6 +71,10 @@ class Operations(db.Model):
 
 
 class TradeHistory(db.Model):
+    """
+    Таблица "История сделок"
+    """
+
     __tablename__ = 'trade_history'
 
     id = db.Column(db.Integer, primary_key=True)

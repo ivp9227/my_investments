@@ -20,7 +20,9 @@ db.init_app(app)  # интегрирование db в приложение
 
 @app.context_processor
 def inject_common_data():
-    """Контекстный процессор для доступа переменных в функциях представления"""
+    """
+    Контекстный процессор для доступа переменных в функциях представления
+    """
 
     assets = MyAssets.query.all()
     asset_types = AssetsList.query.all()
@@ -38,6 +40,9 @@ def inject_common_data():
 
 
 def data_recording_operations_report(purchase_date, broker_id, amount, operation_type_id, note=''):
+    """
+    Функция для записи в таблицу базу данных - "Отчёт по операциям"
+    """
     operation = OperationsReport(
         operation_date=purchase_date,
         broker_id=broker_id,
@@ -51,6 +56,10 @@ def data_recording_operations_report(purchase_date, broker_id, amount, operation
 def partial_data_recording_trade_history(brokerage_account_id, asset_type_id, asset_name, isin, ticker,
                                          purchase_date, cost_one_unit, quantity, bond_amortization,
                                          selling_price_one_unit, sale_date):
+    """
+    Функция для частичной записи в таблицу базу данных - "История сделок"
+    """
+
     data = TradeHistory(
         brokerage_account_id=brokerage_account_id,
         asset_type_id=asset_type_id,
